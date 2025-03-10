@@ -5,8 +5,8 @@ local config = wezterm.config_builder()
 local mux = wezterm.mux
 
 wezterm.on("gui-startup", function()
-  local _, _, window = mux.spawn_window({})
-  window:gui_window():maximize()
+	local _, _, window = mux.spawn_window({})
+	window:gui_window():maximize()
 end)
 
 --window setting
@@ -21,23 +21,21 @@ config.window_decorations = "RESIZE"
 config.font = wezterm.font("JetBrains Mono")
 config.font_size = 14
 config.window_padding = {
-  left = 10,
-  right = 10,
-  top = 10,
-  bottom = 10,
+	left = 10,
+	right = 10,
+	top = 0,
+	bottom = 0,
 }
 
 --Keybindings
 config.keys = {
-  -- Default QuickSelect keybind (CTRL-SHIFT-Space) gets captured by something
-  -- else on my system
-  {
-    key = 'A',
-    mods = 'CTRL|SHIFT',
-    action = wezterm.action.QuickSelect,
-  },
+	-- Default QuickSelect keybind (CTRL-SHIFT-Space) gets captured by something
+	-- else on my system
+	{
+		key = "A",
+		mods = "CTRL|SHIFT",
+		action = wezterm.action.QuickSelect,
+	},
 }
-
-
 
 return config

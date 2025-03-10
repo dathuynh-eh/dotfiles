@@ -1,6 +1,7 @@
 return { -- Autocompletion
   'hrsh7th/nvim-cmp',
   -- event = 'InsertEnter',
+  enabled = false,
   dependencies = {
     -- Snippet Engine & its associated nvim-cmp source
     {
@@ -16,55 +17,79 @@ return { -- Autocompletion
       end)(),
     },
     'saadparwaiz1/cmp_luasnip',
-
-    -- Adds other completion capabilities.
-    --  nvim-cmp does not ship with all sources by default. They are split
-    --  into multiple repos for maintenance purposes.
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
-
-    -- Adds a number of user-friendly snippets
-    'rafamadriz/friendly-snippets',
+    {
+      'rafamadriz/friendly-snippets',
+      config = function()
+        require('luasnip.loaders.from_vscode').lazy_load()
+      end,
+    },
   },
-  config = function()
+  opts = function()
     local cmp = require 'cmp'
-    require('luasnip.loaders.from_vscode').lazy_load()
     local luasnip = require 'luasnip'
-    luasnip.config.setup {}
+    -- local kind_icons = {
+    --   Text = '󰉿',
+    --   Method = 'm',
+    --   Function = '󰊕',
+    --   Constructor = '',
+    --   Field = '',
+    --   Variable = '󰆧',
+    --   Class = '󰌗',
+    --   Interface = '',
+    --   Module = '',
+    --   Property = '',
+    --   Unit = '',
+    --   Value = '󰎠',
+    --   Enum = '',
+    --   Keyword = '󰌋',
+    --   Snippet = '',
+    --   Color = '󰏘',
+    --   File = '󰈙',
+    --   Reference = '',
+    --   Folder = '󰉋',
+    --   EnumMember = '',
+    --   Constant = '󰇽',
+    --   Struct = '',
+    --   Event = '',
+    --   Operator = '󰆕',
+    --   TypeParameter = '󰊄',
+    -- }
 
-    local kind_icons = {
-      Text = '󰉿',
-      Method = 'm',
-      Function = '󰊕',
-      Constructor = '',
-      Field = '',
-      Variable = '󰆧',
-      Class = '󰌗',
-      Interface = '',
-      Module = '',
-      Property = '',
-      Unit = '',
-      Value = '󰎠',
-      Enum = '',
-      Keyword = '󰌋',
-      Snippet = '',
-      Color = '󰏘',
-      File = '󰈙',
-      Reference = '',
-      Folder = '󰉋',
-      EnumMember = '',
-      Constant = '󰇽',
-      Struct = '',
-      Event = '',
-      Operator = '󰆕',
-      TypeParameter = '󰊄',
+    local cmp_kinds = {
+      Text = '  ',
+      Method = '  ',
+      Function = '  ',
+      Constructor = '  ',
+      Field = '  ',
+      Variable = '  ',
+      Class = '  ',
+      Interface = '  ',
+      Module = '  ',
+      Property = '  ',
+      Unit = '  ',
+      Value = '  ',
+      Enum = '  ',
+      Keyword = '  ',
+      Snippet = '  ',
+      Color = '  ',
+      File = '  ',
+      Reference = '  ',
+      Folder = '  ',
+      EnumMember = '  ',
+      Constant = '  ',
+      Struct = '  ',
+      Event = '  ',
+      Operator = '  ',
+      TypeParameter = '  ',
     }
 
-    cmp.setup {
+    return {
       snippet = {
         expand = function(args)
-          luasnip.lsp_expand(args.body)
+          require('luasnip').lsp_expand(args.body)
         end,
       },
       completion = { completeopt = 'menu,menuone,noinsert' },
@@ -100,7 +125,7 @@ return { -- Autocompletion
         -- Select next/previous item with Tab / Shift + Tab
         ['<Tab>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
-            cmp.select_next_item()
+            cmp.confirm { select = true }
           elseif luasnip.expand_or_locally_jumpable() then
             luasnip.expand_or_jump()
           else
@@ -108,9 +133,7 @@ return { -- Autocompletion
           end
         end, { 'i', 's' }),
         ['<S-Tab>'] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_prev_item()
-          elseif luasnip.locally_jumpable(-1) then
+          if luasnip.locally_jumpable(-1) then
             luasnip.jump(-1)
           else
             fallback()
@@ -126,18 +149,27 @@ return { -- Autocompletion
       },
       formatting = {
         fields = { 'kind', 'abbr', 'menu' },
-        format = function(entry, vim_item)
-          -- Kind icons
-          vim_item.kind = string.format('%s', kind_icons[vim_item.kind])
-          -- vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
-          vim_item.menu = ({
-            nvim_lsp = '[LSP]',
-            luasnip = '[Snippet]',
-            buffer = '[Buffer]',
-            path = '[Path]',
-          })[entry.source.name]
+        format = function(_, vim_item)
+          local kind = vim_item.kind
+          vim_item.kind = cmp_kinds[vim_item.kind] or ' '
+          vim_item.menu = kind
+
           return vim_item
         end,
+        --   fields = { 'kind', 'abbr', 'menu' },
+        --   format = function(entry, vim_item)
+        --     -- Kind icons
+        --     vim_item.kind = string.format('%s', cmp_kinds[vim_item.kind])
+        --     -- vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
+        --
+        --     vim_item.menu = ({
+        --       nvim_lsp = '[LSP]',
+        --       luasnip = '[Snippet]',
+        --       buffer = '[Buffer]',
+        --       path = '[Path]',
+        --     })[entry.source.name]
+        --     return vim_item
+        --   end,
       },
     }
   end,

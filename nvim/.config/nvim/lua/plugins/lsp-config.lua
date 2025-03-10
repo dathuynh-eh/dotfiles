@@ -6,26 +6,52 @@ return { -- LSP Configuration & Plugins
     'williamboman/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
     'glepnir/lspsaga.nvim',
-
-    -- Useful status updates for LSP.
-    -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-    {
-      'j-hui/fidget.nvim',
-      tag = 'v1.4.0',
-      opts = {
-        progress = {
-          display = {
-            done_icon = '✓', -- Icon shown when all LSP progress tasks are complete
-          },
-        },
-        notification = {
-          window = {
-            winblend = 0, -- Background color opacity in the notification window
-          },
-        },
-      },
-    },
+    'saghen/blink.cmp',
   },
+  init = function()
+    ---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
+    local progress = vim.defaulttable()
+    vim.api.nvim_create_autocmd('LspProgress', {
+      ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
+      callback = function(ev)
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        local value = ev.data.params.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
+        if not client or type(value) ~= 'table' then
+          return
+        end
+        local p = progress[client.id]
+
+        for i = 1, #p + 1 do
+          if i == #p + 1 or p[i].token == ev.data.params.token then
+            p[i] = {
+              token = ev.data.params.token,
+              msg = ('[%3d%%] %s%s'):format(
+                value.kind == 'end' and 100 or value.percentage or 100,
+                value.title or '',
+                value.message and (' **%s**'):format(value.message) or ''
+              ),
+              done = value.kind == 'end',
+            }
+            break
+          end
+        end
+
+        local msg = {} ---@type string[]
+        progress[client.id] = vim.tbl_filter(function(v)
+          return table.insert(msg, v.msg) or not v.done
+        end, p)
+
+        local spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' }
+        vim.notify(table.concat(msg, '\n'), 'info', {
+          id = 'lsp_progress',
+          title = client.name,
+          opts = function(notif)
+            notif.icon = #progress[client.id] == 0 and ' ' or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+          end,
+        })
+      end,
+    })
+  end,
   config = function()
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
@@ -103,8 +129,8 @@ return { -- LSP Configuration & Plugins
       end,
     })
 
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+    -- local capabilities = vim.lsp.protocol.make_client_capabilities()
+    -- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
     -- Enable the following language servers
     local servers = {
@@ -155,16 +181,17 @@ return { -- LSP Configuration & Plugins
           -- This handles overriding only values explicitly passed
           -- by the server configuration above. Useful when disabling
           -- certain features of an LSP (for example, turning off formatting for tsserver)
-          server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+          -- server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+          server.capabilities = require('blink.cmp').get_lsp_capabilities()
           require('lspconfig')[server_name].setup(server)
         end,
       },
     }
 
-    require('lspsaga').setup {
-      lightbulb = {
-        enable = false,
-      },
-    }
+    -- require('lspsaga').setup {
+    --   lightbulb = {
+    --     enable = false,
+    --   },
+    -- }
   end,
 }
