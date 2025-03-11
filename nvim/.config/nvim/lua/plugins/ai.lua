@@ -69,7 +69,7 @@ local prompts = {
   Summarize = {
     prompt = avante_summarize,
     system_prompt = 'You are skilled at concise summarization',
-    mapping = '<leader>cm',
+    mapping = '<leader>cs',
     description = 'Summarize text content',
   },
   ExplainCode = {
@@ -120,11 +120,11 @@ return {
     dependencies = {
       { 'github/copilot.vim' }, -- or zbirenbaum/copilot.lua
       { 'nvim-lua/plenary.nvim', branch = 'master' }, -- for curl, log and async functions
-      {
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = { file_types = { 'markdown', 'copilot-chat' } },
-        ft = { 'markdown', 'copilot-chat' },
-      },
+      -- {
+      --   'MeanderingProgrammer/render-markdown.nvim',
+      --   opts = { file_types = { 'markdown', 'copilot-chat' } },
+      --   ft = { 'markdown', 'copilot-chat' },
+      -- },
     },
     build = 'make tiktoken', -- Only on MacOS or Linux
     opts = {
@@ -136,7 +136,8 @@ return {
       answer_header = '  Copilot ',
       -- Specify which AI model to use (Claude 3.7 Sonnet)
       -- model = 'claude-3.7-sonnet',
-      model = 'claude-3.5-sonnet',
+      -- model = 'claude-3.5-sonnet',
+      model = 'gpt-4o',
       prompts = prompts,
       -- Set chat window width to 40% of editor
       window = {
@@ -177,6 +178,7 @@ return {
     keys = {
       -- Open Copilot Chat interface in normal mode
       { '<leader>cn', ':CopilotChat<CR>', mode = { 'n', 'v' }, desc = 'Copilot Chat' },
+      { '<leader>cm', ':CopilotChatCommit<CR>', mode = { 'n', 'v' }, desc = 'Copilot Commit' },
     },
   },
   {
@@ -191,17 +193,17 @@ return {
       'stevearc/dressing.nvim',
       'nvim-lua/plenary.nvim',
       'MunifTanjim/nui.nvim',
-      {
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = { file_types = { 'markdown', 'Avante' } },
-        ft = { 'markdown', 'Avante' },
-      },
+      -- {
+      --   'MeanderingProgrammer/render-markdown.nvim',
+      --   opts = { file_types = { 'markdown', 'Avante' } },
+      --   ft = { 'markdown', 'Avante' },
+      -- },
     },
     opts = {
       provider = 'copilot',
       copilot = {
         -- model = 'claude-3.7-sonnet',
-        model = 'claude-3.5-sonnet',
+        -- model = 'claude-3.5-sonnet',
       },
     },
     keys = function()
@@ -232,8 +234,7 @@ return {
         { '<leader>ak', avante_keywords, 'Keywords(ask)' },
         { '<leader>al', avante_code_readability_analysis, 'Code Readability Analysis(ask)' },
         { '<leader>ao', avante_optimize_code, 'Optimize Code(ask)' },
-        { '<leader>am', avante_summarize, 'Summarize text(ask)' },
-        { '<leader>an', avante_translate, 'Translate text(ask)' },
+        { '<leader>as', avante_summarize, 'Summarize text(ask)' },
         { '<leader>ax', avante_explain_code, 'Explain Code(ask)' },
         { '<leader>ac', avante_complete_code, 'Complete Code(ask)' },
         { '<leader>ad', avante_add_docstring, 'Docstring(ask)' },
@@ -263,5 +264,16 @@ return {
 
       return keys
     end,
+  },
+  {
+    'OXY2DEV/markview.nvim',
+    enabled = true,
+    lazy = false,
+    ft = { 'markdown', 'norg', 'rmd', 'org', 'vimwiki', 'Avante', 'copilot-chat' },
+    opts = {
+      filetypes = { 'markdown', 'norg', 'rmd', 'org', 'vimwiki', 'Avante', 'copilot-chat' },
+      buf_ignore = {},
+      max_length = 99999,
+    },
   },
 }

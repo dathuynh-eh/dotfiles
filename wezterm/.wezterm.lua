@@ -18,14 +18,18 @@ config.use_fancy_tab_bar = false
 config.macos_window_background_blur = 10
 config.enable_tab_bar = false
 config.window_decorations = "RESIZE"
-config.font = wezterm.font("JetBrains Mono")
-config.font_size = 14
 config.window_padding = {
 	left = 10,
 	right = 10,
 	top = 0,
 	bottom = 0,
 }
+
+--font setting
+config.font_size = 14.0
+config.font = wezterm.font("JetBrains Mono")
+config.line_height = 1.1
+config.harfbuzz_features = { "calt", "liga", "dlig", "ss01", "ss02", "ss03", "ss04", "ss05", "ss06", "ss07", "ss08" }
 
 --Keybindings
 config.keys = {

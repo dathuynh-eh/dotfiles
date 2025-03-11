@@ -151,13 +151,6 @@ return {
       })
     end, { desc = '[/] Fuzzily search in current buffer' })
 
-    vim.api.nvim_set_hl(0, 'TelescopeNormal', { bg = 'none' })
-    vim.api.nvim_set_hl(0, 'TelescopeBorder', { bg = 'none' })
-    vim.api.nvim_set_hl(0, 'TelescopePromptTitle', { bg = 'none' })
-    vim.api.nvim_set_hl(0, 'TelescopePromptBorder', { bg = 'none' })
-    vim.api.nvim_set_hl(0, 'TelescopePreviewTitle', { bg = 'none' })
-    vim.api.nvim_set_hl(0, 'TelescopeResultsTitle', { bg = 'none' })
-
     require('customs/multigrep').setup()
   end,
 }

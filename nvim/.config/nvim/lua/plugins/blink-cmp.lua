@@ -6,6 +6,7 @@ return {
       'fang2hou/blink-copilot',
       'L3MON4D3/LuaSnip',
       'giuxtaposition/blink-cmp-copilot',
+      'Kaiser-Yang/blink-cmp-avante',
     },
     version = '*',
     -- enabled = false,
@@ -17,7 +18,7 @@ return {
         local filetype = vim.bo.filetype
 
         local unsuported_filetypes = {
-          'AvanteInput',
+          -- 'AvanteInput',
           'copilot-chat',
         }
 
@@ -97,6 +98,8 @@ return {
                     Event = '󱐋  ',
                     Operator = '󰪚  ',
                     TypeParameter = '󰬛  ',
+                    AvanteCmd = '',
+                    AvanteMention = '',
                   }
 
                   return cmp_kinds[ctx.kind]
@@ -131,7 +134,7 @@ return {
 
       ---@type blink.cmp.SourceConfig
       opts.sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot', 'avante' },
 
         providers = {
 
@@ -141,6 +144,11 @@ return {
             score_offset = 4,
             async = true,
             max_items = 2,
+          },
+
+          avante = {
+            module = 'blink-cmp-avante',
+            name = 'Avante',
           },
         },
       }
