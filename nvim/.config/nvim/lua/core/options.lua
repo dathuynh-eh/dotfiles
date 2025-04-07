@@ -20,3 +20,7 @@ vim.o.termguicolors = true -- enable 24-bit RGB colors
 vim.o.swapfile = false -- don't use swapfile
 vim.o.fileencoding = 'utf-8' -- the encoding written to file
 vim.o.scrolloff = 8
+
+-- enable undercurl for diagnostics
+vim.cmd [[ let &t_Cs = "\e[4:3m]" ]]
+vim.cmd [[ let &t_Ce = "\e[4:0m]" ]]

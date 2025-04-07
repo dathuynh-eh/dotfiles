@@ -63,7 +63,7 @@ return {
           '%=', --[[ add your center compoentnts here in place of this comment ]]
         },
         lualine_x = {},
-        lualine_y = { diff, 'branch', 'filetype', 'progress' },
+        lualine_y = { diff, 'branch', { 'filetype', icon_only = true, icon = { alaig = 'right' } }, 'progress' },
         lualine_z = {
           { 'location', separator = { right = '' }, left_padding = 2 },
         },

@@ -67,11 +67,31 @@ return {
         folder_closed = '',
         folder_open = '',
         folder_empty = '󰜌',
+        provider = function(icon, node, state) -- default icon provider utilizes nvim-web-devicons if available
+          if node.type == 'file' or node.type == 'terminal' then
+            local success, web_devicons = pcall(require, 'nvim-web-devicons')
+            local name = node.type == 'terminal' and 'terminal' or node.name
+            if success then
+              local devicon, hl = web_devicons.get_icon(name)
+              icon.text = devicon or icon.text
+              icon.highlight = hl or icon.highlight
+            end
+          end
+        end,
         -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
         -- then these will never be used.
-        default = '*',
+        default = '',
         highlight = 'NeoTreeFileIcon',
       },
+      -- icon = {
+      --   folder_closed = '',
+      --   folder_open = '',
+      --   folder_empty = '󰜌',
+      --   -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
+      --   -- then these will never be used.
+      --   default = '*',
+      --   highlight = 'NeoTreeFileIcon',
+      -- },
       modified = {
         symbol = '[+]',
         highlight = 'NeoTreeModified',
@@ -191,7 +211,7 @@ return {
         hide_by_name = {
           '.DS_Store',
           'thumbs.db',
-          'node_modules',
+          -- 'node_modules',
           '.git',
         },
         hide_by_pattern = { -- uses glob style patterns
@@ -200,6 +220,7 @@ return {
         },
         always_show = { -- remains visible even if other settings would normally hide it
           --".gitignored",
+          '.env',
         },
         never_show = { -- remains hidden even if visible is toggled to true, this overrides always_show
           --".DS_Store",
@@ -302,6 +323,39 @@ return {
       leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
     },
   },
+  -- config = function(_, opts)
+  --   local filesystem = {
+  --     components = {
+  --       icon = function(config, node, state)
+  --         local highlights = require 'neo-tree.ui.highlights'
+  --         local icon = config.default or ' '
+  --         local padding = config.padding or ' '
+  --         local highlight = config.highlight or highlights.FILE_ICON
+  --
+  --         if node.type == 'directory' then
+  --           highlight = highlights.DIRECTORY_ICON
+  --           if node:is_expanded() then
+  --             icon = config.folder_open or '-'
+  --           else
+  --             icon = config.folder_closed or '+'
+  --           end
+  --         elseif node.type == 'file' then
+  --           local success, web_devicons = pcall(require, 'nvim-web-devicons')
+  --           if success then
+  --             local devicon, hl = web_devicons.get_icon(node.name, node.ext)
+  --             icon = devicon or icon
+  --             highlight = hl or highlight
+  --           end
+  --         end
+  --
+  --         return {
+  --           text = icon .. padding,
+  --           highlight = highlight,
+  --         }
+  --       end,
+  --     },
+  --   }
+  -- end,
   init = function()
     -- If you want icons for diagnostic errors, you'll need to define them somewhere:
     vim.fn.sign_define('DiagnosticSignError', { text = ' ', texthl = 'DiagnosticSignError' })
@@ -310,5 +364,7 @@ return {
     vim.fn.sign_define('DiagnosticSignHint', { text = '󰌵', texthl = 'DiagnosticSignHint' })
 
     vim.cmd [[nnoremap \ :Neotree reveal<cr>]]
+
+    print(vim.inspect(tb_filename))
   end,
 }

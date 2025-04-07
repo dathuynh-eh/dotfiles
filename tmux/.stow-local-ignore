@@ -1,0 +1,3 @@
+^/themes(/.*)?
+^/scripts(/.*)?
+^/README\.md

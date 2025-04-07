@@ -5,7 +5,7 @@ return {
     ---@module 'dracula'
     ---@type DraculaConfig
     opts = {
-      transparent_bg = true,
+      -- transparent_bg = true,
       colors = {
         bg = '#282A36',
         fg = '#F8F8F2',
@@ -59,15 +59,31 @@ return {
       -- &COLOR13       '#FF92DF'
       -- &COLOR14       '#A4FFFF'
       -- &COLOR15       '#FFFFFF
-      overrides = function(c)
+      -- blue = "#7aa2f7",
+      -- blue0 = "#3d59a1",
+      -- blue1 = "#2ac3de",
+      -- blue2 = "#0db9d7",
+      -- blue5 = "#89ddff",
+      -- blue6 = "#b4f9f8",
+      -- blue7 = "#394b70",
+      overrides = function(colors)
         return {
-          BlinkCmpGhostText = { fg = c.visual, bg = 'none' },
+          BlinkCmpGhostText = { fg = colors.visual, bg = 'none' },
           TelescopeNormal = { bg = 'none' },
           TelescopeBorder = { bg = 'none' },
           TelescopePromptTitle = { bg = 'none' },
           TelescopePromptBorder = { bg = 'none' },
           TelescopePreviewTitle = { bg = 'none' },
           TelescopeResultsTitle = { bg = 'none' },
+          NeoTreeDirectoryIcon = { fg = '#7aa2f7' },
+
+          ['@lsp.type.property.typescriptreact'] = { fg = colors.fg },
+          ['@lsp.typemod.variable.readonly.typescriptreact'] = { fg = colors.purple },
+          ['@lsp.typemod.property.declaration.typescriptreact'] = { fg = colors.fg },
+          ['@lsp.type.property.javascript'] = { fg = colors.fg },
+          ['@lsp.typemod.variable.readonly.javascript'] = { fg = colors.purple },
+          ['@lsp.typemod.property.declaration.javascript'] = { fg = colors.fg },
+          ['@variable.member.javascript'] = { fg = colors.fg },
         }
       end,
     },

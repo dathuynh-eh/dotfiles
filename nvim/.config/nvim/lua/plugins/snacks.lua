@@ -71,5 +71,14 @@ return {
       },
       input = {},
     },
+    keys = {
+      {
+        '<leader>lg',
+        function()
+          require('snacks').lazygit()
+        end,
+        desc = 'Lazygit',
+      },
+    },
   },
 }

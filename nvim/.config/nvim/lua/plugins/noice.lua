@@ -21,7 +21,7 @@ return {
               return false
             end
 
-            return contains({ 'lua_ls', 'ts_ls' }, client)
+            return contains({ 'lua_ls', 'ts_ls', 'ruby_lsp' }, client)
           end,
         },
         opts = { skip = true },

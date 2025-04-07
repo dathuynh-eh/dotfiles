@@ -17,6 +17,7 @@ return {
       'lua',
       'javascript',
       'typescript',
+      'objc',
       'vimdoc',
       'vim',
       'regex',

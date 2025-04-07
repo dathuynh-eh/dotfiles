@@ -64,7 +64,8 @@ git_status="#(~/dotfiles/tmux/scripts/git-status.sh #{pane_current_path})" # Git
 
 # Status bar positioning
 set-option -g status-position top
-
+set -g status-left-length 100
+set -g status-right-length 100
 # Left side of status bar: session name and git status
 set -g status-left "#[fg=${green},bg=default]#[fg=${bgdark},bg=${green}]  #[fg=${fg},bg=${bgdark}] #S #[fg=${bgdark},bg=default] ${git_status}"
 

@@ -7,6 +7,7 @@ return { -- LSP Configuration & Plugins
     'WhoIsSethDaniel/mason-tool-installer.nvim',
     'glepnir/lspsaga.nvim',
     'saghen/blink.cmp',
+    'b0o/SchemaStore.nvim',
   },
   init = function()
     ---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
@@ -161,6 +162,52 @@ return { -- LSP Configuration & Plugins
         },
       },
       ts_ls = {},
+      yamlls = {
+        settings = {
+          yaml = {
+            schemaStore = {
+              enable = false,
+              url = '',
+            },
+            schemas = require('schemastore').yaml.schemas {
+              -- select subset from the JSON schema catalog
+              select = {
+                'GitHub Workflow',
+                'GitHub Action',
+              },
+            },
+          },
+        },
+        -- settings = {
+        --   yaml = {
+        --     schemaStore = {
+        --       enable = false,
+        --       url = '',
+        --     },
+        --     schemas = require('schemastore').yaml.schemas {
+        --       select = {
+        --         'GitHub Workflows',
+        --         'GitHub Actions',
+        --       },
+        --     },
+        --   },
+        -- },
+      },
+      ruby_lsp = {},
+      jsonls = {
+        settings = {
+          json = {
+            schemas = require('schemastore').json.schemas {
+              select = {
+                'package.json',
+                'Expo SDK',
+                'EAS config',
+                'prettierrc.json',
+              },
+            },
+          },
+        },
+      },
     }
 
     -- Ensure the servers and tools above are installed
@@ -183,6 +230,11 @@ return { -- LSP Configuration & Plugins
           -- certain features of an LSP (for example, turning off formatting for tsserver)
           -- server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
           server.capabilities = require('blink.cmp').get_lsp_capabilities()
+          server.capabilities.textDocument.foldingRange = {
+            dynamicRegistration = false,
+            lineFoldingOnly = true,
+          }
+          -- server.capabilities.textDocument.completion.completionItem.snippetSupport = true
           require('lspconfig')[server_name].setup(server)
         end,
       },

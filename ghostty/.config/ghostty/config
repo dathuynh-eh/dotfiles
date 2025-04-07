@@ -1,8 +1,14 @@
+# Font
 font-family = "JetBrains Mono Nerd Font"
-background-opacity = 0.95
-theme = dracula
 font-size = 14
+
+# Theme
+theme = Dracula
+background-opacity = 0.8
+background-blur = 20
+background = 0f1011 
+
+# Appearance
+cursor-invert-fg-bg = true
 macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = hidden
-maximize = true
-macos-non-native-fullscreen = true
