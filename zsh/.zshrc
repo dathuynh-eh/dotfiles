@@ -1,14 +1,19 @@
-# export ZSH="$HOME/.oh-my-zsh"
-# ZSH_THEME="spaceship"
-# SPACESHIP_CHAR_SYMBOL="🐶 "
-# export EDITOR=/opt/homebrew/bin/nvim
+export ZSH="$HOME/.oh-my-zsh"
+eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(rbenv init - --no-rehash zsh)"
+eval "$(starship init zsh)"
+
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
 export NVM_DIR="$HOME/.nvm"
 export REACT_EDITOR=cursor
+
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-eval "$(starship init zsh)"
+source ~/.config/zsh/eh-token.zsh
 
 # zoxide (better `cd`)
 # ------------------------------------------------------------------------------

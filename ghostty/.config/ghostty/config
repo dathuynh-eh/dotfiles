@@ -9,6 +9,8 @@ background-blur = 20
 background = 0f1011 
 
 # Appearance
+window-height = 9999
+window-width = 9999
 cursor-invert-fg-bg = true
 macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = hidden
