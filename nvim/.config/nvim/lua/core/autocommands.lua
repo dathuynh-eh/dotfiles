@@ -20,3 +20,12 @@ vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
   command = 'set filetype=ruby',
   pattern = { 'Fastfile', 'Appfile', 'Matchfile', 'Gymfile' },
 })
+
+-- Highlight when yanking (copying) text
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})

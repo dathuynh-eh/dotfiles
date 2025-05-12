@@ -5,3 +5,4 @@ require 'core.keymaps'
 require 'core.autocommands'
 
 require 'lazyvim'
+require 'customs.winbar'

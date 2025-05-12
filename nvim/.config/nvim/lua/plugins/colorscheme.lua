@@ -43,29 +43,29 @@ return {
       -- &PURPLE    '#BD93F9'
       -- &RED       '#FF5555'
       -- &YELLOW    '#F1FA8C'
-      -- &COLOR0        '#21222C'
-      -- &COLOR1        '#FF5555'
-      -- &COLOR2        '#50FA7B'
-      -- &COLOR3        '#F1FA8C'
-      -- &COLOR4        '#BD93F9'
-      -- &COLOR5        '#FF79C6'
-      -- &COLOR6        '#8BE9FD'
-      -- &COLOR7        '#F8F8F2'
-      -- &COLOR8        '#6272A4'
-      -- &COLOR9        '#FF6E6E'
-      -- &COLOR10       '#69FF94'
-      -- &COLOR11       '#FFFFA5'
-      -- &COLOR12       '#D6ACFF'
-      -- &COLOR13       '#FF92DF'
-      -- &COLOR14       '#A4FFFF'
-      -- &COLOR15       '#FFFFFF
-      -- blue = "#7aa2f7",
-      -- blue0 = "#3d59a1",
-      -- blue1 = "#2ac3de",
-      -- blue2 = "#0db9d7",
-      -- blue5 = "#89ddff",
-      -- blue6 = "#b4f9f8",
-      -- blue7 = "#394b70",
+      -- &COLOR0    '#21222C'
+      -- &COLOR1    '#FF5555'
+      -- &COLOR2    '#50FA7B'
+      -- &COLOR3    '#F1FA8C'
+      -- &COLOR4    '#BD93F9'
+      -- &COLOR5    '#FF79C6'
+      -- &COLOR6    '#8BE9FD'
+      -- &COLOR7    '#F8F8F2'
+      -- &COLOR8    '#6272A4'
+      -- &COLOR9    '#FF6E6E'
+      -- &COLOR10   '#69FF94'
+      -- &COLOR11   '#FFFFA5'
+      -- &COLOR12   '#D6ACFF'
+      -- &COLOR13   '#FF92DF'
+      -- &COLOR14   '#A4FFFF'
+      -- &COLOR15   '#FFFFFF'
+      -- &BLUE      '#7aa2f7'
+      -- &BLUE0     '#3d59a1'
+      -- &BLUE1     '#2ac3de'
+      -- &BLUE2     '#0db9d7'
+      -- &BLUE5     '#89ddff'
+      -- &BLUE6     '#b4f9f8'
+      -- &BLUE7     '#394b70'
       overrides = function(colors)
         return {
           BlinkCmpGhostText = { fg = colors.visual, bg = 'none' },
@@ -76,6 +76,8 @@ return {
           TelescopePreviewTitle = { bg = 'none' },
           TelescopeResultsTitle = { bg = 'none' },
           NeoTreeDirectoryIcon = { fg = '#7aa2f7' },
+          WinBar = { bg = 'none' },
+          WinBarNC = { bg = 'none' },
 
           ['@lsp.type.property.typescriptreact'] = { fg = colors.fg },
           ['@lsp.typemod.variable.readonly.typescriptreact'] = { fg = colors.purple },

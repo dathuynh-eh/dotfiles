@@ -1,0 +1,35 @@
+local M = {}
+
+M.colors = {
+  bg = '#282A36',
+  bglighter = '#424450',
+  bglight = '#343746',
+  bgdarker = '#191A21',
+  bgdark = '#21222C',
+  fg = '#F8F8F2',
+  selection = '#44475A',
+  comment = '#6272A4',
+  cyan = '#8BE9FD',
+  green = '#50FA7B',
+  orange = '#FFB86C',
+  pink = '#FF79C6',
+  purple = '#BD93F9',
+  red = '#FF5555',
+  yellow = '#F1FA8C',
+  color9 = '#FF6E6E',
+  color10 = '#69FF94',
+  color11 = '#FFFFA5',
+  color12 = '#D6ACFF',
+  color13 = '#FF92DF',
+  color14 = '#A4FFFF',
+  white = '#FFFFFF',
+  blue = '#7aa2f7',
+  blue0 = '#3d59a1',
+  blue1 = '#2ac3de',
+  blue2 = '#0db9d7',
+  blue5 = '#89ddff',
+  blue6 = '#b4f9f8',
+  blue7 = '#394b70',
+}
+
+return M
