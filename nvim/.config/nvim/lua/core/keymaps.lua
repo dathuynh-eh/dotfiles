@@ -74,8 +74,19 @@ vim.keymap.set('i', 'kj', '<ESC>', opts)
 vim.keymap.set('v', '<A-j>', ':m .+1<CR>==v', opts)
 vim.keymap.set('v', '<A-k>', ':m .-2<CR>==v', opts)
 
+-- Forward/Backward search with cursor centered
+vim.keymap.set('n', 'n', 'nzzzv')
+vim.keymap.set('n', 'N', 'Nzzzv')
+
 -- Clear search highlight
 vim.keymap.set('n', '<Esc>', ':noh<CR>', opts)
 
 -- Keep last yanked when pasting
 vim.keymap.set('v', 'p', '"_dP', opts)
+
+-- Copy filepath to the clipboard
+vim.keymap.set('n', '<leader>cf', function()
+  local filePath = vim.fn.expand '%:.' -- Gets the file path relative to the current working directory
+  vim.fn.setreg('+', filePath) -- Copy the file path to the clipboard register
+  print('File path copied to clipboard: ' .. filePath) -- Optional: print message to confirm
+end, { desc = 'Copy file path to clipboard' })

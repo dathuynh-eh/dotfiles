@@ -10,6 +10,15 @@ return {
       },
     }
 
-    vim.diagnostic.config { virtual_text = false }
+    local signs = {
+      [vim.diagnostic.severity.ERROR] = ' ',
+      [vim.diagnostic.severity.WARN] = ' ',
+      [vim.diagnostic.severity.HINT] = ' ',
+      [vim.diagnostic.severity.INFO] = ' ',
+    }
+    vim.diagnostic.config {
+      signs = { text = signs },
+      virtual_text = false,
+    }
   end,
 }

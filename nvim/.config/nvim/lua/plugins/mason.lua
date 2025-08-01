@@ -22,9 +22,12 @@ return {
       ensure_installed = {
         'lua_ls',
         'ts_ls',
+        'yamlls',
+        'jsonls',
         'stylua',
         'eslint_d',
         'prettier',
+        'prettierd',
       },
     }
   end,

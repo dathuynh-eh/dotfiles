@@ -3,7 +3,6 @@ return {
     'saghen/blink.cmp',
     dependencies = {
       'rafamadriz/friendly-snippets',
-      'L3MON4D3/LuaSnip',
       'xzbdmw/colorful-menu.nvim',
     },
     version = '1.*',
@@ -84,12 +83,8 @@ return {
                 end,
               },
               label = {
-                text = function(ctx)
-                  return require('colorful-menu').blink_components_text(ctx)
-                end,
-                highlight = function(ctx)
-                  return require('colorful-menu').blink_components_highlight(ctx)
-                end,
+                text = function(ctx) return require('colorful-menu').blink_components_text(ctx) end,
+                highlight = function(ctx) return require('colorful-menu').blink_components_highlight(ctx) end,
               },
             },
           },
@@ -120,13 +115,23 @@ return {
 
       opts.signature = { enabled = true }
 
+      --- @class blink.cmp.Source
       opts.sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer' },
+        -- default = { 'snippets' },
+
+        --- @class blink.cmp.SourceProviderConfig
+        providers = {
+
+          lsp = {
+            max_items = 7, -- Maximum number of items to display in the menu
+          },
+        },
       }
 
       opts.cmdline = { completion = { ghost_text = { enabled = true } } }
 
-      opts.snippets = { preset = 'luasnip' }
+      -- opts.snippets = { preset = 'luasnip' }
 
       opts.fuzzy = { implementation = 'prefer_rust_with_warning' }
 

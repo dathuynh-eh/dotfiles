@@ -1,5 +1,5 @@
 local colors = require('core.config').colors
-local dev_icons = require 'nvim-web-devicons'
+-- local dev_icons = require 'nvim-web-devicons'
 local winbar_filetype_exclude = {
   'snacks_input',
 }
@@ -19,12 +19,12 @@ end
 local function update_winbar()
   local icon = ''
 
-  if dev_icons.has_loaded() then
-    icon = dev_icons.get_icon_by_filetype(vim.bo.ft, { defaut = true })
-    if icon == nil then
-      icon = ''
-    end
-  end
+  -- if dev_icons.has_loaded() then
+  --   icon = dev_icons.get_icon_by_filetype(vim.bo.ft, { defaut = true })
+  --   if icon == nil then
+  --     icon = ''
+  --   end
+  -- end
   local home_replaced = get_winbar_path()
   local buffer_count = get_buffer_count()
   vim.opt.winbar = '%#WinBar1#'

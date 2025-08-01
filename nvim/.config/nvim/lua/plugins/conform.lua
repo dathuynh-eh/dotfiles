@@ -8,7 +8,7 @@ return {
       typescript = { 'prettierd', 'prettier', stop_after_first = true },
       javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
       typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-      json = { 'prettierd' },
+      json = { 'prettierd', 'prettier' },
     },
     ---@type  fun(brfnr:integer): conform.FormatOpts|nil
     format_on_save = function(brfnr)
@@ -40,8 +40,17 @@ return {
       desc = 'Re-enable auto format on save',
     })
 
-    vim.keymap.set({ 'n', 'v' }, '<leader>k<leader>f', function()
-      require('conform').format()
-    end, { desc = '[F]ormat Code' })
+    vim.keymap.set(
+      { 'n', 'v' },
+      '<leader>mp',
+      function()
+        require('conform').format {
+          lsp_fallback = true,
+          async = false,
+          timeout_ms = 1000,
+        }
+      end,
+      { desc = '[F]ormat Code' }
+    )
   end,
 }

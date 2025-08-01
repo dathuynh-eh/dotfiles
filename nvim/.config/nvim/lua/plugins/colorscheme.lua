@@ -5,7 +5,7 @@ return {
     ---@module 'dracula'
     ---@type DraculaConfig
     opts = {
-      -- transparent_bg = true,
+      transparent_bg = true,
       colors = {
         bg = '#282A36',
         fg = '#F8F8F2',
@@ -66,31 +66,43 @@ return {
       -- &BLUE5     '#89ddff'
       -- &BLUE6     '#b4f9f8'
       -- &BLUE7     '#394b70'
+      -- DiffAdd        xxx guifg=#282a36 guibg=#50fa7b
+      -- DiffDelete     xxx guifg=#ff5555
+      -- DiffChange     xxx guifg=#ffb86c
+      -- DiffText       xxx guifg=#6272a4
+      --
       overrides = function(colors)
         return {
-          BlinkCmpGhostText = { fg = colors.visual, bg = 'none' },
-          TelescopeNormal = { bg = 'none' },
-          TelescopeBorder = { bg = 'none' },
-          TelescopePromptTitle = { bg = 'none' },
-          TelescopePromptBorder = { bg = 'none' },
-          TelescopePreviewTitle = { bg = 'none' },
-          TelescopeResultsTitle = { bg = 'none' },
-          NeoTreeDirectoryIcon = { fg = '#7aa2f7' },
-          WinBar = { bg = 'none' },
-          WinBarNC = { bg = 'none' },
-
-          ['@lsp.type.property.typescriptreact'] = { fg = colors.fg },
-          ['@lsp.typemod.variable.readonly.typescriptreact'] = { fg = colors.purple },
+          -- stylua: ignore start
+          BlinkCmpGhostText                                     = { fg = colors.visual, bg = 'none' },
+          TelescopeNormal                                       = { bg = 'none' },
+          TelescopeBorder                                       = { bg = 'none' },
+          TelescopePromptTitle                                  = { bg = 'none' },
+          TelescopePromptBorder                                 = { bg = 'none' },
+          TelescopePreviewTitle                                 = { bg = 'none' },
+          TelescopeResultsTitle                                 = { bg = 'none' },
+          NeoTreeDirectoryIcon                                  = { fg = '#7aa2f7' },
+          WinBar                                                = { bg = 'none' },
+          WinBarNC                                              = { bg = 'none' },
+          NeogitDiffAdd                                         = { bg = colors.green, fg = colors.black },
+          NeogitDiffAddHighlight                                = { bg = colors.green, fg = colors.black },
+          DiffAdd                                               = { bg = '#435f46' },
+          DiffChange                                            = { bg = '#3e473d' },
+          DiffDelete                                            = { bg = '#8a3339' },
+          ['@lsp.type.property.typescriptreact']                = { fg = colors.fg },
+          ['@lsp.typemod.variable.readonly.typescriptreact']    = { fg = colors.purple },
           ['@lsp.typemod.property.declaration.typescriptreact'] = { fg = colors.fg },
-          ['@lsp.type.property.javascript'] = { fg = colors.fg },
-          ['@lsp.typemod.variable.readonly.javascript'] = { fg = colors.purple },
-          ['@lsp.typemod.property.declaration.javascript'] = { fg = colors.fg },
-          ['@variable.member.javascript'] = { fg = colors.fg },
+          ['@lsp.type.property.javascript']                     = { fg = colors.fg },
+          ['@lsp.typemod.variable.readonly.javascript']         = { fg = colors.purple },
+          ['@lsp.typemod.property.declaration.javascript']      = { fg = colors.fg },
+          ['@variable.member.javascript']                       = { fg = colors.fg },
+          -- stylua: ignore end
         }
       end,
     },
     init = function()
       -- load the colorscheme here
+
       vim.cmd [[colorscheme dracula]]
     end,
   },

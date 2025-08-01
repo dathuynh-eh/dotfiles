@@ -6,6 +6,7 @@ eval "$(starship init zsh)"
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
 export NVM_DIR="$HOME/.nvm"
 export REACT_EDITOR=cursor
 

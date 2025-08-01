@@ -16,16 +16,20 @@ vim.api.nvim_create_autocmd({ 'FileChangedShellPost' }, {
 
 -- Ruby
 -- Set Fastlane to ruby filetype
-vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
-  command = 'set filetype=ruby',
-  pattern = { 'Fastfile', 'Appfile', 'Matchfile', 'Gymfile' },
+vim.api.nvim_create_autocmd({ 'BufReadPost' }, {
+  pattern = { '*.podspec', 'Podfile', 'Fastfile', 'Appfile', 'Matchfile', 'Gymfile' },
+  callback = function() vim.opt.filetype = 'ruby' end,
+})
+
+-- CPP
+vim.api.nvim_create_autocmd({ 'BufReadPost' }, {
+  pattern = { '*.mm' },
+  callback = function() vim.opt.filetype = 'objective-cpp' end,
 })
 
 -- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
+  callback = function() vim.highlight.on_yank() end,
 })

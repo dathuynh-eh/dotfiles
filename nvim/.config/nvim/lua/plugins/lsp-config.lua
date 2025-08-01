@@ -2,6 +2,8 @@ return { -- LSP Configuration & Plugins
   'neovim/nvim-lspconfig',
   dependencies = {
     'saghen/blink.cmp',
+    'b0o/SchemaStore.nvim',
+    'pmizio/typescript-tools.nvim',
   },
   config = function()
     vim.api.nvim_create_autocmd('LspAttach', {
@@ -16,10 +18,11 @@ return { -- LSP Configuration & Plugins
         -- Jump to the definition of the word under your cursor.
         --  This is where a variable was first declared, or where a function is defined, etc.
         --  To jump back, press <C-T>.
-        map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+        map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
 
         -- Find references for the word under your cursor.
-        map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+        map('gr', function() Snacks.picker.lsp_references() end, '[G]oto [R]eferences')
+        -- map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
         -- Jump to the implementation of the word under your cursor.
         --  Useful when your language has ways of declaring types without an actual implementation.
@@ -54,74 +57,120 @@ return { -- LSP Configuration & Plugins
         --  For example, in C this would take you to the header
         map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
+        map('<leader>rs', ':LspRestart<CR>', 'Restart LSP') -- mapping to restart lsp if necessary
+
         map('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
         map('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-        map('<leader>wl', function()
-          print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, '[W]orkspace [L]ist Folders')
+        map(
+          '<leader>wl',
+          function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
+          '[W]orkspace [L]ist Folders'
+        ) -- The following two autocommands are used to highlight references of the
 
-        -- The following two autocommands are used to highlight references of the
         -- word under your cursor when your cursor rests there for a little while.
         --    See `:help CursorHold` for information about when this is executed
         --
         -- When you move your cursor, the highlights will be cleared (the second autocommand).
-        local client = vim.lsp.get_client_by_id(event.data.client_id)
-        if client and client.server_capabilities.documentHighlightProvider then
-          vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-            buffer = event.buf,
-            callback = vim.lsp.buf.document_highlight,
-          })
-
-          vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-            buffer = event.buf,
-            callback = vim.lsp.buf.clear_references,
-          })
-        end
+        -- local client = vim.lsp.get_client_by_id(event.data.client_id)
+        -- if client and client.server_capabilities.documentHighlightProvider then
+        --   vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+        --     buffer = event.buf,
+        --     callback = vim.lsp.buf.document_highlight,
+        --   })
+        --
+        --   vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+        --     buffer = event.buf,
+        --     callback = vim.lsp.buf.clear_references,
+        --   })
+        -- end
       end,
     })
 
     local lspconfig = require 'lspconfig'
     local capabilities = require('blink.cmp').get_lsp_capabilities() -- Import capabilities from blink.cmp
+    capabilities.textDocument.foldingRange = {
+      dynamicRegistration = false,
+      lineFoldingOnly = true,
+    }
 
     -- Configure lua_ls
     lspconfig.lua_ls.setup {
       capabilities = capabilities,
       settings = {
         Lua = {
-          diagnostics = {
-            globals = { 'vim' },
+          runtime = { version = 'LuaJIT' },
+          workspace = {
+            checkThirdParty = false,
+            -- Tells lua_ls where to find all the Lua files that you have loaded
+            -- for your neovim configuration.
+            library = {
+              '${3rd}/luv/library',
+              unpack(vim.api.nvim_get_runtime_file('', true)),
+            },
+            -- If lua_ls is really slow on your computer, you can try this instead:
+            -- library = { vim.env.VIMRUNTIME },
           },
           completion = {
             callSnippet = 'Replace',
           },
-          workspace = {
-            library = {
-              [vim.fn.expand '$VIMRUNTIME/lua'] = true,
-              [vim.fn.stdpath 'config' .. '/lua'] = true,
-            },
-          },
+          telemetry = { enable = false },
+          diagnostics = { disable = { 'missing-fields' } },
         },
       },
     }
-    --
-    -- -- Configure tsserver (TypeScript and JavaScript)
+
+    -- Configure tsserver (TypeScript and JavaScript)
     lspconfig.ts_ls.setup {
       capabilities = capabilities,
-      -- root_dir = function(fname)
-      --   local util = lspconfig.util
-      --   return not util.root_pattern('deno.json', 'deno.jsonc')(fname) and util.root_pattern('tsconfig.json', 'package.json', 'jsconfig.json', '.git')(fname)
-      -- end,
-      -- single_file_support = false,
-      -- on_attach = function(client, bufnr)
-      --   -- Disable formatting if you're using a separate formatter like Prettier
-      --   client.server_capabilities.documentFormattingProvider = false
-      -- end,
-      -- init_options = {
-      --   preferences = {
-      --     includeCompletionsWithSnippetText = true,
-      --     includeCompletionsForImportStatements = true,
-      --   },
-      -- },
+      settings = {},
+    }
+
+    -- Configure yamlls
+    lspconfig.yamlls.setup {
+      capabilities = capabilities,
+    }
+
+    -- Configure jsonls
+    lspconfig.jsonls.setup {
+      capabilities = capabilities,
+      settings = {
+        json = {
+          schemas = require('schemastore').json.schemas {
+            select = {
+              'package.json',
+              'Expo SDK',
+              'EAS config',
+              'prettierrc.json',
+            },
+          },
+          -- schemas = {
+          --   {
+          --     fileMatch = { 'package.json' },
+          --     url = 'https://json.schemastore.org/package.json',
+          --   },
+          --   {
+          --     fileMatch = { 'tsconfig*.json' },
+          --     url = 'https://json.schemastore.org/tsconfig.json',
+          --   },
+          --   {
+          --     fileMatch = { '.prettierrc', '.prettierrc.json', 'prettier.config.json' },
+          --     url = 'https://json.schemastore.org/prettierrc.json',
+          --   },
+          --   {
+          --     fileMatch = { '.eslintrc', '.eslintrc.json' },
+          --     url = 'https://json.schemastore.org/eslintrc.json',
+          --   },
+          --   {
+          --     fileMatch = { '.babelrc', '.babelrc.json', 'babel.config.json' },
+          --     url = 'https://json.schemastore.org/babelrc.json',
+          --   },
+          --   {
+          --     fileMatch = { 'app.json' },
+          --     url = 'https://www.schemastore.org/expo-52.0.0.json',
+          --   },
+          -- },
+        },
+      },
     }
   end,
 }

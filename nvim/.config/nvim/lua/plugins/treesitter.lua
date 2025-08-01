@@ -7,6 +7,7 @@ return {
     indent = { enable = true },
 
     ensure_installed = {
+      'c',
       'lua',
       'javascript',
       'typescript',
@@ -26,5 +27,8 @@ return {
   },
   config = function(_, opts)
     require('nvim-treesitter.configs').setup(opts)
+
+    vim.treesitter.language.register('objc', 'objective-cpp')
+    vim.treesitter.language.register('objc', 'objective-c')
   end,
 }
