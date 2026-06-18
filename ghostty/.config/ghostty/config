@@ -4,8 +4,9 @@ font-size = 14
 
 # Theme
 theme = Dracula
-background-opacity = 0.8
-background-blur = 20
+background-opacity = 0.7
+background-blur = true
+background-blur-radius = 20
 background = 0f1011 
 
 # Appearance
@@ -14,3 +15,9 @@ window-width = 9999
 cursor-invert-fg-bg = true
 macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = hidden
+
+
+#Keybindings
+keybind = super+shift+j=write_screen_file:paste
+
+custom-shader = shaders/cursor_tail.glsl
